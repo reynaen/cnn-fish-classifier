@@ -21,33 +21,28 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 # ──────────────────────────────────────────────
 # LOAD MODEL & CLASS NAMES
 # ──────────────────────────────────────────────
-MODEL_PATH = 'fish_cnn_model.keras'
-CLASSES_PATH = 'class_names.npy'
+MODEL_PATH = 'fish_cnn_model.h5'
+CLASSES_PATH = 'class_names.npy'  # tidak dipakai lagi tapi biarkan saja
 
 model = None
 class_names = []
 
 def load_model_and_classes():
     global model, class_names
+    
+    # Class names hardcoded - tidak perlu file .npy
+    class_names = [
+        'Black Sea Sprat', 'Gilt-Head Bream', 'Hourse Mackerel',
+        'Red Mullet', 'Red Sea Bream', 'Sea Bass',
+        'Shrimp', 'Striped Red Mullet', 'Trout'
+    ]
+    
     if os.path.exists(MODEL_PATH):
         print("Memuat model CNN...")
         model = tf.keras.models.load_model(MODEL_PATH)
         print("Model berhasil dimuat!")
     else:
         print(f"[PERINGATAN] File model '{MODEL_PATH}' tidak ditemukan.")
-        print("Jalankan model_training/train_model.py terlebih dahulu.")
-
-    if os.path.exists(CLASSES_PATH):
-        class_names = list(np.load(CLASSES_PATH, allow_pickle=True))
-        print(f"Kelas dimuat: {class_names}")
-    else:
-        # Fallback class names dari dataset ikan
-        class_names = [
-            "Black Sea Sprat", "Gilt-Head Bream", "Horse Mackerel",
-            "Red Mullet", "Red Sea Bream", "Sea Bass",
-            "Shrimp", "Striped Red Mullet", "Trout"
-        ]
-        print(f"Menggunakan class names default: {class_names}")
 
 load_model_and_classes()
 
